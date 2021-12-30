@@ -24,5 +24,6 @@
 #define PIN_LCD_SCE GPIO_PIN2
 
 void lcd_init();
+void test_write();
 
 #endif /* LCD_H_ */

@@ -10,10 +10,9 @@ static void init_lcdpins(){
     MAP_GPIO_setAsOutputPin(GPIO_PORT_P2, PIN_LCD_MODE); // LCD Data/Command pin
     GPIO_setOutputHighOnPin(GPIO_PORT_P2, PIN_LCD_MODE); // Setting it high because it goes LOW on its own for some reason
     MAP_GPIO_setAsOutputPin(GPIO_PORT_P5, PIN_LCD_SCE); // LCD Chip select pin /SCE
-
 }
-static void lcd_command(uint8_t lcd_mode, uint8_t command){
 
+static void lcd_command(uint8_t lcd_mode, uint8_t command){
     if(lcd_mode == LCD_COMMAND)
     {
         GPIO_setOutputLowOnPin(GPIO_PORT_P2, PIN_LCD_MODE);
@@ -30,7 +29,6 @@ static void lcd_command(uint8_t lcd_mode, uint8_t command){
     SPI_transmitData(EUSCI_B0_BASE, command);
 
     GPIO_setOutputHighOnPin(GPIO_PORT_P5, PIN_LCD_SCE);
-
 }
 
 static void reset_lcd(){
@@ -52,27 +50,32 @@ static void set_contrast(uint8_t contrast)
 }
 
 void lcd_init(){
-
     reset_lcd();
     // add delay
     uint8_t i = 0;
     for(i=0;i<20;i++);
 
-
     init_lcdpins();
-
 
     lcd_command(LCD_COMMAND,0x21); // function set
     lcd_command(LCD_COMMAND,0xB0); // Set contrast LCD Vop
     lcd_command(LCD_COMMAND,0x04); // Set temp coeff
     lcd_command(LCD_COMMAND,0x14); // LCD bias mode 1:48 (try 0x13)
     lcd_command(LCD_COMMAND,0x20); // We must send 0x20 before modifying the display control mode
-//    lcd_command(LCD_COMMAND,0x0C); // Set display control, normal mode
-    lcd_command(LCD_COMMAND,0x09); // Set display control, normal mode
+    lcd_command(LCD_COMMAND,0x0C); // Set display control, normal mode
+//    lcd_command(LCD_COMMAND,0x09); // Turn the whole display on
     set_contrast(60);
-
+    lcd_command(LCD_COMMAND, 0x40); // Y=0
+    lcd_command(LCD_COMMAND, 0x80); // X=0
 
 }
+
+void test_write(){
+    lcd_command(LCD_DATA, 0x07);
+    lcd_command(LCD_DATA, 0x05);
+    lcd_command(LCD_DATA, 0x1F);
+}
+
 
 
 

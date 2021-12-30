@@ -22,11 +22,10 @@ const eUSCI_SPI_MasterConfig spiMasterConfig =
         EUSCI_B_SPI_3PIN                           // 3Wire SPI Mode
 };
 
+uint8_t write = 0;
+
 int main(void)
 {
-
-//      uint8_t TXData = 0;
-
 //    /* Halting the Watchdog */
       MAP_WDT_A_holdTimer();
 
@@ -44,7 +43,15 @@ int main(void)
 
       /* Enabling SRAM Bank Retention */
       MAP_SysCtl_enableSRAMBankRetention(SYSCTL_SRAM_BANK1);
-    
+
+
+      /* Configuring SysTick to trigger at 1500000 (MCLK is 3MHz so this will make
+      * it toggle every 0.5s) */
+      MAP_SysTick_enableModule();
+      MAP_SysTick_setPeriod(6000000);
+//      MAP_Interrupt_enableSleepOnIsrExit();
+      MAP_SysTick_enableInterrupt();
+
       /* Enabling MASTER interrupts */
       MAP_Interrupt_enableMaster();
 
@@ -53,7 +60,20 @@ int main(void)
       /* Going to LPM3 */
       while (1)
       {
-          MAP_PCM_gotoLPM3();
+//          MAP_PCM_gotoLPM3();
+
+          if(write == 1)
+          {
+              write = 0;
+              test_write();
+              MAP_SysTick_disableInterrupt();
+          }
+
       }
 }
 
+void SysTick_Handler(void)
+{
+    write = 1;
+
+}
