@@ -22,20 +22,22 @@ static void lcd_command(uint8_t lcd_mode, uint8_t command){
         GPIO_setOutputHighOnPin(GPIO_PORT_P2, PIN_LCD_MODE);
     }
 
-    GPIO_setOutputLowOnPin(GPIO_PORT_P5, PIN_LCD_SCE);
+    GPIO_setOutputLowOnPin(GPIO_PORT_P5, PIN_LCD_SCE); // SPI transactions are read only when SCE is low
 
     while (!(SPI_getInterruptStatus(EUSCI_B0_BASE,EUSCI_B_SPI_TRANSMIT_INTERRUPT)));
-    /* Transmitting data to slave */
-    SPI_transmitData(EUSCI_B0_BASE, command);
+    SPI_transmitData(EUSCI_B0_BASE, command); /* Transmitting data to slave */
 
-    GPIO_setOutputHighOnPin(GPIO_PORT_P5, PIN_LCD_SCE);
+    GPIO_setOutputHighOnPin(GPIO_PORT_P5, PIN_LCD_SCE); // If not set high LCD waits for more bytes
 }
 
 static void reset_lcd(){
     MAP_GPIO_setAsOutputPin(GPIO_PORT_P5, PIN_LCD_RESET); // LCD reset pin
     // pull reset pin low
     GPIO_setOutputLowOnPin(GPIO_PORT_P5, PIN_LCD_RESET);
-    // 6ns period
+    /*
+     * It takes 6ns for the reset pin to go low then high
+     * According to datasheet min time required for reset is 100us and max 100ms
+     */
     // push reset pin high
     GPIO_setOutputHighOnPin(GPIO_PORT_P5, PIN_LCD_RESET);
 }
@@ -49,9 +51,18 @@ static void set_contrast(uint8_t contrast)
     lcd_command(LCD_COMMAND,0x20); //Set display mode
 }
 
+static void set_x(uint8_t cood){
+    lcd_command(LCD_COMMAND, cood | 0x80);
+}
+
+static void set_y(uint8_t cood){
+    lcd_command(LCD_COMMAND, cood | 0x40);
+}
+
 void lcd_init(){
     reset_lcd();
-    // add delay
+
+    //TODO: add timer delay
     uint8_t i = 0;
     for(i=0;i<20;i++);
 
@@ -65,17 +76,33 @@ void lcd_init(){
     lcd_command(LCD_COMMAND,0x0C); // Set display control, normal mode
 //    lcd_command(LCD_COMMAND,0x09); // Turn the whole display on
     set_contrast(60);
-    lcd_command(LCD_COMMAND, 0x40); // Y=0
-    lcd_command(LCD_COMMAND, 0x80); // X=0
+    set_x(0); // set X to 0
+    set_y(0); // set Y to 0
+}
 
+static void clear_screen(){
+    uint16_t i;
+
+    for(i = 0; i < (LENGTH * WIDTH)/8; i++)
+    {
+        lcd_command(LCD_DATA, 0x0);
+    }
 }
 
 void test_write(){
-    lcd_command(LCD_DATA, 0x07);
+    delay(DELAY);
+    clear_screen();
+    delay(DELAY);
+    lcd_command(LCD_DATA, 0xFF);
     lcd_command(LCD_DATA, 0x05);
-    lcd_command(LCD_DATA, 0x1F);
+    lcd_command(LCD_DATA, 0xFF);
 }
 
+void add_snake_block(uint8_t x,uint8_t y)
+{
+    set_x(x);
+    set_y(y);
 
+}
 
 
