@@ -89,6 +89,66 @@ static void clear_screen(){
     }
 }
 
+
+static void create_block(uint8_t max_x, bool up)
+{
+    uint8_t x = 0;
+    static uint8_t pattern = 0xF0;
+
+    if(up) pattern = pattern ^ 0xFF;
+
+    // using horizontal addressing
+    for(x = 0; x < max_x; x++){
+       delay(BLOCK_DELAY);
+       lcd_command(LCD_DATA, pattern);
+    }
+}
+
+uint8_t add_snake_block(int16_t x,int16_t y)
+{
+    uint8_t max_x = x + 4;
+    bool up;
+
+    static int16_t x_old = 0;
+    static int16_t y_old = 0;
+
+    // X limits
+
+    // Y limits
+    if( y_old == 47 && y == WIDTH)
+    {
+        up = true;
+        y = 0;
+    }
+    else if(y_old == 0 && y == -1){
+        up = true;
+        y = 47;
+    }
+    else if(y > y_old){
+        up = true;
+    }
+    else if(y_old == 0 && y == 0){
+        up = true;
+    }
+    else{
+        up = false;
+    }
+
+    set_x(x);
+    set_y(y_old);
+
+    x_old = x;
+    y_old = y;
+
+    delay(EYE_DELAY);
+    clear_screen();
+
+    create_block(max_x,up);
+
+    return 0;
+}
+
+// Function to make a weird test figure
 void test_write(){
     delay(DELAY);
     clear_screen();
@@ -97,12 +157,4 @@ void test_write(){
     lcd_command(LCD_DATA, 0x05);
     lcd_command(LCD_DATA, 0xFF);
 }
-
-void add_snake_block(uint8_t x,uint8_t y)
-{
-    set_x(x);
-    set_y(y);
-
-}
-
 

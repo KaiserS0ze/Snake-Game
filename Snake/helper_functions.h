@@ -12,6 +12,6 @@
 #include <stdbool.h>
 #include "driverlib.h"
 
-void delay(uint16_t time);
+void delay(uint32_t time);
 
 #endif /* HELPER_FUNCTIONS_H_ */

@@ -48,8 +48,11 @@ int main(void)
       MAP_Interrupt_enableMaster();
 
       lcd_init();
+      uint8_t i = 0;
 
-      test_write();
+      for(i = 0; i < 12; i++){
+          add_snake_block(0, i);
+      }
 
       /* Going to LPM3 */
       while (1)

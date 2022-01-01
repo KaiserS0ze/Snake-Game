@@ -7,8 +7,8 @@
 
 #include "helper_functions.h"
 
-void delay(uint16_t time){
+void delay(uint32_t time){
     MAP_SysTick_enableModule();
-    MAP_SysTick_setPeriod(DELAY); // Ticks needed for 2 seconds period
+    MAP_SysTick_setPeriod(time); // Ticks needed for 2 seconds period
     while(SysTick_getValue() != (time - 1));
 }

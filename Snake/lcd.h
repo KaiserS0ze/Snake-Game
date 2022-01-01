@@ -24,6 +24,8 @@
 
 // Time
 #define DELAY 700000
+#define EYE_DELAY 300000
+#define BLOCK_DELAY 200000
 
 // Assigning pins
 #define PIN_LCD_RESET GPIO_PIN0
@@ -31,7 +33,7 @@
 #define PIN_LCD_SCE GPIO_PIN2
 
 void lcd_init();
-void add_snake_block(uint8_t x,uint8_t y);
+uint8_t add_snake_block(int16_t x,int16_t y);
 void test_write();
 
 #endif /* LCD_H_ */
