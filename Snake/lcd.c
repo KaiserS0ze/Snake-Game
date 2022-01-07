@@ -89,7 +89,6 @@ void clear_screen(){
     }
 }
 
-
 void create_block(uint8_t pattern)
 {
     uint8_t x = 0;

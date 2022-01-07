@@ -17,5 +17,8 @@ typedef enum {
     right
 }directions;
 
+#define SNAKE_SIZE 4
+
 uint8_t add_snake_block(uint16_t *x,uint16_t *y, directions direction);
+#define STEADY 255
 #endif /* SNAKE_METHODS_H_ */

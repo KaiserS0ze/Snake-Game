@@ -25,7 +25,7 @@ const eUSCI_SPI_MasterConfig spiMasterConfig =
 
 //uint8_t write = 0;
 
-bool press_right; // button pressed variable
+uint8_t press_right; // button pressed variable
 directions direction;
 uint16_t x = 0;
 uint16_t y = 0;
@@ -60,48 +60,52 @@ int main(void)
        * This is needed to set a reference direction
        * for what is left and right from the snake's POV
       */
-      direction = left;
+      direction = up;
 
       while (1)
       {
-//          switch(direction){
-//              case up:
-//                  //Y--
-//                  if(press_right == true){
-//                      direction = right;
-//                  }
-//                  else{
-//                      direction = left;
-//                  }
-//                  break;
-//              case down:
-//                  // Y++
-//                  if(press_right == true){
-//                      direction = left;
-//                  }
-//                  else{
-//                      direction = right;
-//                  }
-//                  break;
-//              case right:
-//                  // X++
-//                  if(press_right == true){
-//                      direction = down;
-//                  }
-//                  else{
-//                      direction = up;
-//                  }
-//                  break;
-//              case left:
-//                  // X--
-//                  if(press_right == true){
-//                      direction = up;
-//                  }
-//                  else{
-//                      direction = down;
-//                  }
-//                  break;
-//          }
+          switch(direction){
+              case up:
+                  //Y--
+                  if(press_right == 1){
+                      direction = right;
+                  }
+                  else if (press_right == 0){
+                      direction = left;
+                  }
+                  press_right = STEADY;
+                  break;
+              case down:
+                  // Y++
+                  if(press_right == 1){
+                      direction = left;
+                  }
+                  else if (press_right == 0){
+                      direction = right;
+                  }
+                  press_right = STEADY;
+                  break;
+              case right:
+                  // X++
+                  if(press_right == 1){
+                      direction = down;
+                  }
+                  else if (press_right == 0){
+                      direction = up;
+                  }
+                  press_right = STEADY;
+                  break;
+              case left:
+                  // X--
+                  if(press_right == 1){
+                      direction = up;
+                  }
+                  else if (press_right == 0){
+                      direction = down;
+                  }
+                  press_right = STEADY;
+                  break;
+          }
           add_snake_block(&x, &y, direction);
       }
 }

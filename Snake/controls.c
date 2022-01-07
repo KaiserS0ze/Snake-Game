@@ -7,6 +7,7 @@
 
 #include "controls.h"
 
+extern uint8_t press_right; // button pressed variable
 
 void buttons_init(){
     /* Configuring P1.0 and P2.1 as output and P1.1 and P1.4 (switch) as input */
@@ -39,10 +40,12 @@ void PORT1_IRQHandler(void)
     {
         // Turn left
         MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P1, GPIO_PIN0);
+        press_right = 0;
     }
     if(status & GPIO_PIN4)
     {
         // Turn Right
         MAP_GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN1);
+        press_right = 1;
     }
 }
