@@ -17,7 +17,6 @@ uint8_t add_snake_block(uint16_t *x,uint16_t *y, directions direction)
     // X and Y have to stay within LCD limits
     *y = *y % Y_MAX_BYTES;
     virtual_y = virtual_y % (Y_MAX_BYTES * (8/SNAKE_SIZE));
-
     *x = *x%81;
 
     set_x(*x);
@@ -29,31 +28,28 @@ uint8_t add_snake_block(uint16_t *x,uint16_t *y, directions direction)
 
     switch(direction){
         case up:
-
                 if(*y){
                     *y = *y -1;
                     virtual_y = virtual_y - 1;
                 }
                 else{
                     *y = Y_MAX_BYTES -1;
-                    virtual_y = (Y_MAX_BYTES * (8/SNAKE_SIZE)) - 1;
                 }
-//                pattern = pattern ^ 0xFF;
+                if(!virtual_y) virtual_y = (Y_MAX_BYTES * (8/SNAKE_SIZE)) - 1;
                 vertical = true;
             break;
         case down:
                 *y = *y + 1;
                 virtual_y = virtual_y + 1;
-            //  pattern = pattern ^ 0xFF;
                 vertical = true;
             break;
         case right:
-                *x = *x + 1;
+                *x = *x + 4;
                 vertical = false;
             break;
         case left:
                 if(*x){
-                    *x = *x - 1;
+                    *x = *x - 4;
                 }
                 else{
                     *x = 80;
@@ -71,8 +67,10 @@ uint8_t add_snake_block(uint16_t *x,uint16_t *y, directions direction)
         }
 
         set_x(*x);
+        if(direction == up) set_y(*y); // need to switch Y to move pattern upwards
         create_block(pattern); // We switch from 0xF0 to 0x0F
-//        pattern = pattern ^ 0xFF;
+        if(direction == down) virtual_y = virtual_y + 1;
+        if(direction == up) virtual_y = virtual_y - 1;
     }
 
     return 0;

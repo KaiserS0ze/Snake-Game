@@ -25,7 +25,7 @@ const eUSCI_SPI_MasterConfig spiMasterConfig =
 
 //uint8_t write = 0;
 
-uint8_t press_right; // button pressed variable
+uint8_t press_right = STEADY; // button pressed variable
 directions direction;
 uint16_t x = 0;
 uint16_t y = 0;
@@ -60,7 +60,7 @@ int main(void)
        * This is needed to set a reference direction
        * for what is left and right from the snake's POV
       */
-      direction = up;
+      direction = left;
 
       while (1)
       {
