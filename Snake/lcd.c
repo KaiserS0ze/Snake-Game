@@ -51,11 +51,11 @@ static void set_contrast(uint8_t contrast)
     lcd_command(LCD_COMMAND,0x20); //Set display mode
 }
 
-static void set_x(uint8_t cood){
+void set_x(uint16_t cood){
     lcd_command(LCD_COMMAND, cood | 0x80);
 }
 
-static void set_y(uint8_t cood){
+void set_y(uint16_t cood){
     lcd_command(LCD_COMMAND, cood | 0x40);
 }
 
@@ -80,7 +80,7 @@ void lcd_init(){
     set_y(0); // set Y to 0
 }
 
-static void clear_screen(){
+void clear_screen(){
     uint16_t i;
 
     for(i = 0; i < (LENGTH * WIDTH)/8; i++)
@@ -90,62 +90,15 @@ static void clear_screen(){
 }
 
 
-static void create_block(uint8_t max_x, bool up)
+void create_block(uint8_t pattern)
 {
     uint8_t x = 0;
-    static uint8_t pattern = 0xF0;
-
-    if(up) pattern = pattern ^ 0xFF;
 
     // using horizontal addressing
-    for(x = 0; x < max_x; x++){
+    for(x = 0; x < 4; x++){
        delay(BLOCK_DELAY);
        lcd_command(LCD_DATA, pattern);
     }
-}
-
-uint8_t add_snake_block(int16_t x,int16_t y)
-{
-    uint8_t max_x = x + 4;
-    bool up;
-
-    static int16_t x_old = 0;
-    static int16_t y_old = 0;
-
-    // X limits
-
-    // Y limits
-    if( y_old == 47 && y == WIDTH)
-    {
-        up = true;
-        y = 0;
-    }
-    else if(y_old == 0 && y == -1){
-        up = true;
-        y = 47;
-    }
-    else if(y > y_old){
-        up = true;
-    }
-    else if(y_old == 0 && y == 0){
-        up = true;
-    }
-    else{
-        up = false;
-    }
-
-    set_x(x);
-    set_y(y_old);
-
-    x_old = x;
-    y_old = y;
-
-    delay(EYE_DELAY);
-    clear_screen();
-
-    create_block(max_x,up);
-
-    return 0;
 }
 
 // Function to make a weird test figure

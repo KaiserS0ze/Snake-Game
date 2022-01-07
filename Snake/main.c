@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include "controls.h"
 #include "lcd.h"
+#include "snake_methods.h"
 
 /* SPI Master Configuration Parameter */
 const eUSCI_SPI_MasterConfig spiMasterConfig =
@@ -23,6 +24,12 @@ const eUSCI_SPI_MasterConfig spiMasterConfig =
 };
 
 //uint8_t write = 0;
+
+bool press_right; // button pressed variable
+directions direction;
+uint16_t x = 0;
+uint16_t y = 0;
+
 
 int main(void)
 {
@@ -48,16 +55,54 @@ int main(void)
       MAP_Interrupt_enableMaster();
 
       lcd_init();
-      uint8_t i = 0;
+      /*
+       * Start by entering from left to right of screen
+       * This is needed to set a reference direction
+       * for what is left and right from the snake's POV
+      */
+      direction = left;
 
-      for(i = 0; i < 12; i++){
-          add_snake_block(0, i);
-      }
-
-      /* Going to LPM3 */
       while (1)
       {
-        MAP_PCM_gotoLPM3();
+//          switch(direction){
+//              case up:
+//                  //Y--
+//                  if(press_right == true){
+//                      direction = right;
+//                  }
+//                  else{
+//                      direction = left;
+//                  }
+//                  break;
+//              case down:
+//                  // Y++
+//                  if(press_right == true){
+//                      direction = left;
+//                  }
+//                  else{
+//                      direction = right;
+//                  }
+//                  break;
+//              case right:
+//                  // X++
+//                  if(press_right == true){
+//                      direction = down;
+//                  }
+//                  else{
+//                      direction = up;
+//                  }
+//                  break;
+//              case left:
+//                  // X--
+//                  if(press_right == true){
+//                      direction = up;
+//                  }
+//                  else{
+//                      direction = down;
+//                  }
+//                  break;
+//          }
+          add_snake_block(&x, &y, direction);
       }
 }
 

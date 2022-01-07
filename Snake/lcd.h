@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #include "driverlib.h"
 #include "helper_functions.h"
+#include <stdio.h>
 
 // LCD DATA/COMMAND modes
 #define LCD_COMMAND 0
@@ -21,11 +22,12 @@
 // LCD Dimensions
 #define LENGTH 84
 #define WIDTH 48
+#define Y_MAX_BYTES 6
 
 // Time
 #define DELAY 700000
-#define EYE_DELAY 300000
-#define BLOCK_DELAY 200000
+#define EYE_DELAY 70000
+#define BLOCK_DELAY 25000
 
 // Assigning pins
 #define PIN_LCD_RESET GPIO_PIN0
@@ -33,7 +35,10 @@
 #define PIN_LCD_SCE GPIO_PIN2
 
 void lcd_init();
-uint8_t add_snake_block(int16_t x,int16_t y);
+void create_block(uint8_t pattern);
+void clear_screen();
+void set_x(uint16_t cood);
+void set_y(uint16_t cood);
 void test_write();
 
 #endif /* LCD_H_ */
