@@ -100,6 +100,17 @@ void create_block(uint8_t pattern)
     }
 }
 
+void delete_block(){
+    uint8_t x = 0;
+
+    // using horizontal addressing
+    for(x = 0; x < 4; x++){
+       delay(BLOCK_DELAY);
+       lcd_command(LCD_DATA,0);
+    }
+}
+
+
 // Function to make a weird test figure
 void test_write(){
     delay(DELAY);

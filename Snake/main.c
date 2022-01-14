@@ -25,10 +25,16 @@ const eUSCI_SPI_MasterConfig spiMasterConfig =
 
 //uint8_t write = 0;
 
+// Extern variables
 uint8_t press_right = STEADY; // button pressed variable
+block_t snake_head;
+block_t *snake_tail;
+
+// Global variables
 directions direction;
 uint16_t x = 0;
 uint16_t y = 0;
+block_t *iter;
 
 
 int main(void)
@@ -60,53 +66,68 @@ int main(void)
        * This is needed to set a reference direction
        * for what is left and right from the snake's POV
       */
-      direction = left;
-
-      while (1)
+      direction = right;
+      snake_head.block_x = 0;
+      snake_head.block_y = 0;
+      snake_head.block_direction = direction;
+      snake_head.next_block = NULL;
+      snake_tail = &snake_head;
+      iter = &snake_head;
+      uint8_t i = 0;
+      for(i = 0; i <4; i++)
+//      while (1)
       {
-          switch(direction){
-              case up:
-                  //Y--
-                  if(press_right == 1){
-                      direction = right;
-                  }
-                  else if (press_right == 0){
-                      direction = left;
-                  }
-                  press_right = STEADY;
-                  break;
-              case down:
-                  // Y++
-                  if(press_right == 1){
-                      direction = left;
-                  }
-                  else if (press_right == 0){
-                      direction = right;
-                  }
-                  press_right = STEADY;
-                  break;
-              case right:
-                  // X++
-                  if(press_right == 1){
-                      direction = down;
-                  }
-                  else if (press_right == 0){
-                      direction = up;
-                  }
-                  press_right = STEADY;
-                  break;
-              case left:
-                  // X--
-                  if(press_right == 1){
-                      direction = up;
-                  }
-                  else if (press_right == 0){
-                      direction = down;
-                  }
-                  press_right = STEADY;
-                  break;
-          }
-          add_snake_block(&x, &y, direction);
+//          switch(direction){
+//              case up:
+//                  //Y--
+//                  if(press_right == 1){
+//                      direction = right;
+//                  }
+//                  else if (press_right == 0){
+//                      direction = left;
+//                  }
+//                  press_right = STEADY;
+//                  break;
+//              case down:
+//                  // Y++
+//                  if(press_right == 1){
+//                      direction = left;
+//                  }
+//                  else if (press_right == 0){
+//                      direction = right;
+//                  }
+//                  press_right = STEADY;
+//                  break;
+//              case right:
+//                  // X++
+//                  if(press_right == 1){
+//                      direction = down;
+//                  }
+//                  else if (press_right == 0){
+//                      direction = up;
+//                  }
+//                  press_right = STEADY;
+//                  break;
+//              case left:
+//                  // X--
+//                  if(press_right == 1){
+//                      direction = up;
+//                  }
+//                  else if (press_right == 0){
+//                      direction = down;
+//                  }
+//                  press_right = STEADY;
+//                  break;
+//          }
+//          move_snake_block(&x, &y, direction);
+            while(iter->next_block != NULL){
+                move_snake_block(&iter->block_x,&iter->block_y,iter->block_direction);
+                iter = iter->next_block;
+            }
+            clear_screen();
+            iter=&snake_head;
+
+            snake_block_add();
       }
 }
 

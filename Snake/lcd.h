@@ -27,7 +27,7 @@
 // Time
 #define DELAY 700000
 #define EYE_DELAY 70000
-#define BLOCK_DELAY 25000
+#define BLOCK_DELAY 12000
 
 // Assigning pins
 #define PIN_LCD_RESET GPIO_PIN0
@@ -36,6 +36,7 @@
 
 void lcd_init();
 void create_block(uint8_t pattern);
+void delete_block();
 void clear_screen();
 void set_x(uint16_t cood);
 void set_y(uint16_t cood);

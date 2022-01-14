@@ -7,7 +7,29 @@
 
 #include "snake_methods.h"
 
-uint8_t add_snake_block(uint16_t *x,uint16_t *y, directions direction)
+extern block_t snake_head;
+extern block_t *snake_tail;
+
+uint8_t snake_block_add(){
+
+    block_t *new_block = (block_t*)malloc(sizeof(block_t));
+
+    if(new_block == NULL){
+        return 1;
+    }
+
+    new_block->block_direction = snake_tail->block_direction;
+    new_block->block_x = snake_tail->block_x;
+    new_block->block_y = snake_tail->block_y;
+    new_block->next_block = NULL;
+
+    snake_tail->next_block = new_block; // previously added node now points to new node
+    snake_tail = new_block; // the new node is now the snake_tail
+
+    return 0;
+}
+
+uint8_t move_snake_block(uint16_t *x,uint16_t *y, directions direction)
 {
     uint8_t pattern = 0x0F; // check this
     static uint8_t virtual_y = 0;
@@ -23,7 +45,7 @@ uint8_t add_snake_block(uint16_t *x,uint16_t *y, directions direction)
     set_y(*y);
 
     delay(EYE_DELAY);
-    clear_screen(); // TODO: This is okay for 1 block but, it won't work with multiple blocks
+//    clear_screen(); // TODO: This is okay for 1 block but, it won't work with multiple blocks
     create_block(pattern);
 
     switch(direction){
