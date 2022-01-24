@@ -11,6 +11,11 @@ extern block_t snake_head;
 extern block_t *snake_tail;
 
 uint8_t snake_block_add(){
+    static uint16_t max_length = 0;
+
+    if(max_length == ((LENGTH*WIDTH)/(1 << SNAKE_SIZE))){
+        return 1;
+    }
 
     block_t *new_block = (block_t*)malloc(sizeof(block_t));
 
@@ -25,6 +30,7 @@ uint8_t snake_block_add(){
 
     snake_tail->next_block = new_block; // previously added node now points to new node
     snake_tail = new_block; // the new node is now the snake_tail
+    max_length = max_length + 1;
 
     return 0;
 }
@@ -94,6 +100,22 @@ uint8_t move_snake_block(uint16_t *x,uint16_t *y, directions direction)
         if(direction == down) virtual_y = virtual_y + 1;
         if(direction == up) virtual_y = virtual_y - 1;
     }
+
+    return 0;
+}
+
+uint8_t slither(){
+
+    block_t *traverse  = &snake_head;
+
+    while(traverse->next_block != NULL){
+        move_snake_block(&traverse->block_x,&traverse->block_y,traverse->block_direction);
+        traverse = traverse->next_block;
+    }
+
+    clear_screen();
+
+    traverse=&snake_head;
 
     return 0;
 }

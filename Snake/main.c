@@ -34,7 +34,6 @@ block_t *snake_tail;
 directions direction;
 uint16_t x = 0;
 uint16_t y = 0;
-block_t *iter;
 
 
 int main(void)
@@ -66,16 +65,17 @@ int main(void)
        * This is needed to set a reference direction
        * for what is left and right from the snake's POV
       */
-      direction = right;
-      snake_head.block_x = 0;
+
+      //TODO: Make Snake Initialisation Function
+      direction = left;
+      snake_head.block_x = 83;
       snake_head.block_y = 0;
       snake_head.block_direction = direction;
       snake_head.next_block = NULL;
       snake_tail = &snake_head;
-      iter = &snake_head;
+
       uint8_t i = 0;
-      for(i = 0; i <4; i++)
-//      while (1)
+      while (1)
       {
 //          switch(direction){
 //              case up:
@@ -120,14 +120,9 @@ int main(void)
 //                  break;
 //          }
 //          move_snake_block(&x, &y, direction);
-            while(iter->next_block != NULL){
-                move_snake_block(&iter->block_x,&iter->block_y,iter->block_direction);
-                iter = iter->next_block;
-            }
-            clear_screen();
-            iter=&snake_head;
-
-            snake_block_add();
+            slither();
+            if(i<8) snake_block_add();
+            i++;
       }
 }
 
