@@ -9,6 +9,7 @@
 
 extern block_t snake_head;
 extern block_t *snake_tail;
+uint8_t num_nodes = 0;
 
 uint8_t snake_block_add(){
     static uint16_t max_length = 0;
@@ -31,7 +32,7 @@ uint8_t snake_block_add(){
     snake_tail->next_block = new_block; // previously added node now points to new node
     snake_tail = new_block; // the new node is now the snake_tail
     max_length = max_length + 1;
-
+    num_nodes = num_nodes + 1;
     return 0;
 }
 
@@ -104,18 +105,38 @@ uint8_t move_snake_block(uint16_t *x,uint16_t *y, directions direction)
     return 0;
 }
 
-uint8_t slither(){
+uint8_t slither(directions direction){
 
-    block_t *traverse  = &snake_head;
+    static uint8_t node_changed = 0;
+    uint8_t counter = 0;
 
-    while(traverse->next_block != NULL){
+    block_t *traverse = &snake_head;
+
+    do{ // Iterate through snake LL at least once
+
+        if(counter == node_changed){
+            traverse->block_direction = direction;
+        }
+
         move_snake_block(&traverse->block_x,&traverse->block_y,traverse->block_direction);
+
+        if(traverse == &snake_head && traverse->next_block == NULL) break; // if snake has only one block break the loop
+
         traverse = traverse->next_block;
+        counter = counter + 1;
+
+
     }
+    while(traverse->next_block != NULL); // keep iterating through the LL till we don't reach the tail
 
     clear_screen();
 
     traverse=&snake_head;
+    node_changed = node_changed + 1;
+
+    if(node_changed == num_nodes){
+        node_changed = 0;
+    }
 
     return 0;
 }

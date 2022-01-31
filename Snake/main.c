@@ -67,62 +67,62 @@ int main(void)
       */
 
       //TODO: Make Snake Initialisation Function
-      direction = left;
-      snake_head.block_x = 83;
+      direction = down;
+      snake_head.block_x = 0;
       snake_head.block_y = 0;
       snake_head.block_direction = direction;
       snake_head.next_block = NULL;
       snake_tail = &snake_head;
 
-      uint8_t i = 0;
+//      uint8_t i = 0;
       while (1)
       {
-//          switch(direction){
-//              case up:
-//                  //Y--
-//                  if(press_right == 1){
-//                      direction = right;
-//                  }
-//                  else if (press_right == 0){
-//                      direction = left;
-//                  }
-//                  press_right = STEADY;
-//                  break;
-//              case down:
-//                  // Y++
-//                  if(press_right == 1){
-//                      direction = left;
-//                  }
-//                  else if (press_right == 0){
-//                      direction = right;
-//                  }
-//                  press_right = STEADY;
-//                  break;
-//              case right:
-//                  // X++
-//                  if(press_right == 1){
-//                      direction = down;
-//                  }
-//                  else if (press_right == 0){
-//                      direction = up;
-//                  }
-//                  press_right = STEADY;
-//                  break;
-//              case left:
-//                  // X--
-//                  if(press_right == 1){
-//                      direction = up;
-//                  }
-//                  else if (press_right == 0){
-//                      direction = down;
-//                  }
-//                  press_right = STEADY;
-//                  break;
-//          }
-//          move_snake_block(&x, &y, direction);
-            slither();
-            if(i<8) snake_block_add();
-            i++;
+          switch(direction){
+              case up:
+                  //Y--
+                  if(press_right == 1){
+                      direction = right;
+                  }
+                  else if (press_right == 0){
+                      direction = left;
+                  }
+                  press_right = STEADY;
+                  break;
+              case down:
+                  // Y++
+                  if(press_right == 1){
+                      direction = left;
+                  }
+                  else if (press_right == 0){
+                      direction = right;
+                  }
+                  press_right = STEADY;
+                  break;
+              case right:
+                  // X++
+                  if(press_right == 1){
+                      direction = down;
+                  }
+                  else if (press_right == 0){
+                      direction = up;
+                  }
+                  press_right = STEADY;
+                  break;
+              case left:
+                  // X--
+                  if(press_right == 1){
+                      direction = up;
+                  }
+                  else if (press_right == 0){
+                      direction = down;
+                  }
+                  press_right = STEADY;
+                  break;
+          }
+
+            slither(direction);
+//            if(i<2) snake_block_add();
+//            i++;
       }
 }
 

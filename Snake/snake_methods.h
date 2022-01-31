@@ -36,6 +36,6 @@ typedef struct block_definition {
 #define SNAKE_SIZE 4
 uint8_t snake_block_add();
 uint8_t move_snake_block(uint16_t *x,uint16_t *y, directions direction);
-uint8_t slither();
+uint8_t slither(directions direction);
 #define STEADY 255
 #endif /* SNAKE_METHODS_H_ */
