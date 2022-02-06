@@ -27,7 +27,7 @@
 // Time
 #define DELAY 700000
 #define EYE_DELAY 200000
-#define BLOCK_DELAY 12000
+#define BLOCK_DELAY 24000
 
 // Assigning pins
 #define PIN_LCD_RESET GPIO_PIN0

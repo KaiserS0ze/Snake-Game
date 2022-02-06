@@ -67,14 +67,15 @@ int main(void)
       */
 
       //TODO: Make Snake Initialisation Function
-      direction = down;
+      direction = up;
       snake_head.block_x = 0;
       snake_head.block_y = 0;
+      snake_head.subblock_y = 0;
       snake_head.block_direction = direction;
       snake_head.next_block = NULL;
       snake_tail = &snake_head;
 
-//      uint8_t i = 0;
+      uint8_t i = 0;
       while (1)
       {
           switch(direction){
@@ -121,8 +122,8 @@ int main(void)
           }
 
             slither(direction);
-//            if(i<2) snake_block_add();
-//            i++;
+            if(i<8) snake_block_add();
+            i++;
       }
 }
 

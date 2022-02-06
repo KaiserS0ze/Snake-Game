@@ -22,6 +22,7 @@ typedef enum {
 typedef struct block_definition {
    uint16_t block_x;
    uint16_t block_y;
+   uint16_t subblock_y;
    directions block_direction;
    struct block_definition *next_block;
 }block_t;
@@ -35,7 +36,7 @@ typedef struct block_definition {
 
 #define SNAKE_SIZE 4
 uint8_t snake_block_add();
-uint8_t move_snake_block(uint16_t *x,uint16_t *y, directions direction);
+uint8_t move_snake_block(uint16_t *x, uint16_t *y, uint16_t *virtual_y, directions direction);
 uint8_t slither(directions direction);
 #define STEADY 255
 #endif /* SNAKE_METHODS_H_ */
