@@ -26,7 +26,7 @@
 
 // Time
 #define DELAY 700000
-#define EYE_DELAY 70000
+#define EYE_DELAY 200000
 #define BLOCK_DELAY 12000
 
 // Assigning pins

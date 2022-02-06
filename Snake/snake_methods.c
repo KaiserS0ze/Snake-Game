@@ -61,7 +61,7 @@ uint8_t move_snake_block(uint16_t *x,uint16_t *y, directions direction)
                     *y = *y -1;
                     virtual_y = virtual_y - 1;
                 }
-                else{
+                else{ // *y == 0
                     *y = Y_MAX_BYTES -1;
                 }
                 if(!virtual_y) virtual_y = (Y_MAX_BYTES * (8/SNAKE_SIZE)) - 1;
@@ -97,6 +97,8 @@ uint8_t move_snake_block(uint16_t *x,uint16_t *y, directions direction)
 
         set_x(*x);
         if(direction == up) set_y(*y); // need to switch Y to move pattern upwards
+        create_block(0x00);
+        set_x(*x);
         create_block(pattern); // We switch from 0xF0 to 0x0F
         if(direction == down) virtual_y = virtual_y + 1;
         if(direction == up) virtual_y = virtual_y - 1;
@@ -114,9 +116,11 @@ uint8_t slither(directions direction){
 
     do{ // Iterate through snake LL at least once
 
-        if(counter == node_changed){
-            traverse->block_direction = direction;
-        }
+//        if(counter == node_changed){
+//            traverse->block_direction = direction;
+//        }
+
+        traverse->block_direction = direction;
 
         move_snake_block(&traverse->block_x,&traverse->block_y,traverse->block_direction);
 
